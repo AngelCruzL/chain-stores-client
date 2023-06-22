@@ -13,7 +13,7 @@
       <th scope="col">Nombre</th>
       <th scope="col">Dirección</th>
       <th scope="col">Teléfono</th>
-      <th scope="col">Imagen</th>
+      <!--      <th scope="col">Imagen</th>-->
       <th scope="col"></th>
       <th scope="col"></th>
     </tr>
@@ -23,7 +23,7 @@
       <th scope="row">{{store.name}}</th>
       <td>{{store.address}}</td>
       <td>{{store.phone}}</td>
-      <td><img [alt]="store.name" [src]="store.picture"></td>
+      <!--      <td><img [alt]="store.name" [src]="store.picture"></td>-->
       <td><a [routerLink]="['/admin/edit-store',store._id]">
         <svg class="bi bi-pencil-square" fill="currentColor" height="16" viewBox="0 0 16 16" width="16"
              xmlns="http://www.w3.org/2000/svg">

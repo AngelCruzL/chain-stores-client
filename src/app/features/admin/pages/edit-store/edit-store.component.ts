@@ -55,7 +55,7 @@ export class EditStoreComponent implements OnInit {
       phone: ['', Validators.required],
       address: ['', Validators.required],
       description: ['', Validators.required],
-      image: [''],
+      // image: [''],
       picture: [''],
       latitude: ['', Validators.required],
       longitude: ['', Validators.required],
@@ -71,41 +71,37 @@ export class EditStoreComponent implements OnInit {
   editStore() {
     if (this.editStoreForm.invalid) return;
 
-    if (!this.editStoreForm.get('image')?.value) {
-      this.editStoreForm.removeControl('image');
-    } else {
-      this.#storeService.uploadStoreImage(this.formData).subscribe(res => {
-        this.editStoreForm.get('picture')?.setValue(res.secureUrl);
-        this.editStoreForm.removeControl('image');
+    // if (!this.editStoreForm.get('image')?.value) {
+    //   this.editStoreForm.removeControl('image');
+    // } else {
+    //   this.#storeService.uploadStoreImage(this.formData).subscribe(res => {
+    //     this.editStoreForm.get('picture')?.setValue(res.secureUrl);
+    //     this.editStoreForm.removeControl('image');
+    //   });
+    // }
+
+    this.#storeService
+      .editStore(this.id, this.editStoreForm.value)
+      .pipe(
+        catchError(error => {
+          if (error.error.message.includes('Store already exists {"name":'))
+            this.errorMessage = 'Ya existe una sucursal con ese nombre';
+
+          if (error.error.message.includes('Store already exists {"address":'))
+            this.errorMessage = 'Ya existe una sucursal con esa dirección';
+
+          Swal.fire({
+            title: '¡Error!',
+            text: this.errorMessage ?? error.error.message,
+            icon: 'error',
+            confirmButtonText: 'Ok',
+          });
+
+          throw new Error(error.error.message);
+        }),
+      )
+      .subscribe(() => {
+        this.#router.navigate(['/admin']);
       });
-    }
-
-    setTimeout(() => {
-      this.#storeService
-        .editStore(this.id, this.editStoreForm.value)
-        .pipe(
-          catchError(error => {
-            if (error.error.message.includes('Store already exists {"name":'))
-              this.errorMessage = 'Ya existe una sucursal con ese nombre';
-
-            if (
-              error.error.message.includes('Store already exists {"address":')
-            )
-              this.errorMessage = 'Ya existe una sucursal con esa dirección';
-
-            Swal.fire({
-              title: '¡Error!',
-              text: this.errorMessage ?? error.error.message,
-              icon: 'error',
-              confirmButtonText: 'Ok',
-            });
-
-            throw new Error(error.error.message);
-          }),
-        )
-        .subscribe(() => {
-          this.#router.navigate(['/admin']);
-        });
-    }, 200);
   }
 }

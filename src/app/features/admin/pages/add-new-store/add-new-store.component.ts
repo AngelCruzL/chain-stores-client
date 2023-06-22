@@ -26,7 +26,7 @@ export class AddNewStoreComponent implements OnInit {
       phone: ['', Validators.required],
       address: ['', Validators.required],
       description: ['', Validators.required],
-      image: ['', Validators.required],
+      // image: ['', Validators.required],
       picture: [''],
       latitude: ['', Validators.required],
       longitude: ['', Validators.required],
@@ -42,37 +42,33 @@ export class AddNewStoreComponent implements OnInit {
   addNewStore() {
     if (this.newStoreForm.invalid) return;
 
-    this.#storeService.uploadStoreImage(this.formData).subscribe(res => {
-      this.newStoreForm.get('picture')?.setValue(res.secureUrl);
-      this.newStoreForm.removeControl('image');
-    });
+    // this.#storeService.uploadStoreImage(this.formData).subscribe(res => {
+    //   this.newStoreForm.get('picture')?.setValue(res.secureUrl);
+    //   this.newStoreForm.removeControl('image');
+    // });
 
-    setTimeout(() => {
-      this.#storeService
-        .addNewStore(this.newStoreForm.value)
-        .pipe(
-          catchError(error => {
-            if (error.error.message.includes('Store already exists {"name":'))
-              this.errorMessage = 'Ya existe una sucursal con ese nombre';
+    this.#storeService
+      .addNewStore(this.newStoreForm.value)
+      .pipe(
+        catchError(error => {
+          if (error.error.message.includes('Store already exists {"name":'))
+            this.errorMessage = 'Ya existe una sucursal con ese nombre';
 
-            if (
-              error.error.message.includes('Store already exists {"address":')
-            )
-              this.errorMessage = 'Ya existe una sucursal con esa dirección';
+          if (error.error.message.includes('Store already exists {"address":'))
+            this.errorMessage = 'Ya existe una sucursal con esa dirección';
 
-            Swal.fire({
-              title: '¡Error!',
-              text: this.errorMessage ?? error.error.message,
-              icon: 'error',
-              confirmButtonText: 'Ok',
-            });
+          Swal.fire({
+            title: '¡Error!',
+            text: this.errorMessage ?? error.error.message,
+            icon: 'error',
+            confirmButtonText: 'Ok',
+          });
 
-            throw new Error(error.error.message);
-          }),
-        )
-        .subscribe(() => {
-          this.#router.navigate(['/admin']);
-        });
-    }, 200);
+          throw new Error(error.error.message);
+        }),
+      )
+      .subscribe(() => {
+        this.#router.navigate(['/admin']);
+      });
   }
 }
