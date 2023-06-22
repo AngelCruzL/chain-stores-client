@@ -1,0 +1,53 @@
+<div class="container">
+  <h1>Editar Sucursal</h1>
+
+  <div class="actions">
+    <a role="button" routerLink="/admin">Volver</a>
+  </div>
+
+  <form (ngSubmit)="editStore()" [formGroup]="editStoreForm">
+    <div class="grid">
+      <label for="name">
+        Nombre de la tienda:
+        <input
+          formControlName="name"
+          id="name"
+          placeholder="Nombre de tienda"
+          type="text"
+        >
+      </label>
+
+      <label for="phone">
+        Teléfono:
+        <input formControlName="phone" id="phone" placeholder="43634123" type="tel">
+      </label>
+    </div>
+
+    <label for="text">Dirección</label>
+    <input formControlName="address" id="text" placeholder="Calle..." type="text">
+
+    <label for="description">Descripción:</label>
+    <textarea formControlName="description" id="description"
+              placeholder="La tienda cuenta con una fachada..."></textarea>
+
+    <label for="image">Imagen de la tienda:
+      <input (change)="handleImageChange($event)" accept="image/*" formControlName="image" id="image" name="image"
+             type="file">
+    </label>
+
+    <div class="grid">
+      <label for="lat">
+        Latitud:
+        <input formControlName="latitude" id="lat" placeholder="-119.46264236464236" type="number">
+      </label>
+
+      <label for="lng">
+        Longitud:
+        <input formControlName="longitude" id="lng" placeholder="39.4526264642" type="number">
+      </label>
+    </div>
+
+    <button [disabled]="!editStoreForm.valid" type="submit">Guardar Cambios</button>
+  </form>
+</div>
+
