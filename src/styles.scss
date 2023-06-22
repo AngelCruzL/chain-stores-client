@@ -4,3 +4,19 @@ body {
   margin: 0;
   padding: 0;
 }
+
+h1 {
+  margin-block: 2rem 3rem;
+  text-align: center;
+}
+
+.container {
+  margin-inline: auto;
+  inline-size: min(90%, 1400px);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-end: 2rem;
+}
